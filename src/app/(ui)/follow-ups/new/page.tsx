@@ -12,13 +12,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { format } from 'date-fns'
+import { Suspense } from 'react'
+
+export const dynamic = 'force-dynamic'
 
 interface Contact {
   id: string
   name: string
 }
 
-export default function NewFollowUpPage() {
+function NewFollowUpForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
@@ -180,5 +183,13 @@ export default function NewFollowUpPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function NewFollowUpPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading...</div>}>
+      <NewFollowUpForm />
+    </Suspense>
   )
 }

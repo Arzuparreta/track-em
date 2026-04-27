@@ -68,8 +68,8 @@ export default function TodayPage() {
       setRecentCalls(allCalls.slice(0, 5))
       setStats({
         contacts: allContacts.length,
-        pendingFollowUps: allFollowUps.filter(fu => !fu.completed).length,
-        overdue: allFollowUps.filter(fu => !fu.completed && isPast(parseISO(fu.scheduledAt))).length,
+        pendingFollowUps: allFollowUps.filter((fu: any) => !fu.completed).length,
+        overdue: allFollowUps.filter((fu: any) => !fu.completed && isPast(parseISO(fu.scheduledAt))).length,
       })
     } catch (err) {
       console.error('Failed to fetch data:', err)

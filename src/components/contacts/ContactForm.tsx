@@ -33,7 +33,7 @@ interface ContactFormProps {
 }
 
 const ROLE_OPTIONS = [
-  { value: '', label: 'No role' },
+  { value: 'none', label: 'No role' },
   { value: 'booking_agent', label: 'Booking Agent' },
   { value: 'manager', label: 'Manager' },
   { value: 'promoter', label: 'Promoter' },
@@ -52,16 +52,16 @@ export default function ContactForm({
   isLoading,
 }: ContactFormProps) {
   const router = useRouter()
-  const [formData, setFormData] = useState<ContactFormData>(
-    initialData || {
-      name: '',
-      emails: [''],
-      phones: [''],
-      role: '',
-      artistContext: '',
-      notes: '',
-    }
-  )
+    const [formData, setFormData] = useState<ContactFormData>(
+      initialData || {
+        name: '',
+        emails: [''],
+        phones: [''],
+        role: 'none',
+        artistContext: '',
+        notes: '',
+      }
+    )
 
   const addEmail = () => {
     setFormData((prev) => ({

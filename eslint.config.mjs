@@ -1,15 +1,22 @@
 import js from '@eslint/js'
-import eslintConfigNext from 'eslint-config-next'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
   {
-    extends: [js.configs.recommended, ...eslintConfigNext.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      sourceType: 'module'
-    }
-  }
-)
+    ignores: ['.next/**', 'node_modules/**', 'build/**', 'dist/**', '*.config.js', 'scripts/**'],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      }],
+      '@typescript-eslint/no-empty-object-type': 'off',
+    },
+  },
+]

@@ -11,7 +11,7 @@ interface UsersClientProps {
 }
 
 export default function UsersClient({ initialUsers }: UsersClientProps) {
-  const [users, setUsers] = useState(initialUsers)
+  const [users, _setUsers] = useState(initialUsers)
   const [showForm, setShowForm] = useState(false)
   const [editingUser, setEditingUser] = useState<User | null>(null)
 

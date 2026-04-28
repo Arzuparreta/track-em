@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, User, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, User, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
-import { format } from 'date-fns'
+
 import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -45,7 +45,7 @@ function NewFollowUpForm() {
       if (!response.ok) throw new Error('Failed to fetch contacts')
       const data = await response.json()
       setContacts(data.data || [])
-    } catch (err) {
+    } catch (_err) {
       toast({ title: 'Error', description: 'Failed to load contacts', variant: 'destructive' })
     } finally {
       setLoading(false)
@@ -74,7 +74,7 @@ function NewFollowUpForm() {
       toast({ title: 'Success', description: 'Follow-up scheduled' })
       router.push('/follow-ups')
       router.refresh()
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: 'Error',
         description: err instanceof Error ? err.message : 'Failed to create follow-up',

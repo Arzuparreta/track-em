@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { authOptions } from './auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
 
 describe('Auth Configuration', () => {
   it('should have credentials provider configured', () => {

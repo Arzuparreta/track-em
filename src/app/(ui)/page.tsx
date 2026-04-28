@@ -6,9 +6,9 @@ import Link from 'next/link'
 import { Clock, CheckCircle, AlertCircle, Phone, Mail, UserPlus, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+
 import { Skeleton } from '@/components/ui/skeleton'
-import { format, isToday, isPast, parseISO } from 'date-fns'
+import { isToday, isPast, parseISO } from 'date-fns'
 import { formatDistanceToNow } from 'date-fns'
 
 export const dynamic = 'force-dynamic'

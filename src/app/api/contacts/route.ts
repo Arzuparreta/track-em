@@ -11,7 +11,6 @@ const createContactSchema = z.object({
   notes: z.string().optional(),
 })
 
-const updateContactSchema = createContactSchema.partial()
 
 export async function GET(request: NextRequest) {
   try {

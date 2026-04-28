@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Clock, User, Phone, Calendar, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, Clock, User, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
-import { format } from 'date-fns'
+
 
 interface Contact {
   id: string
@@ -48,7 +48,7 @@ export default function NewCallPage() {
       if (!response.ok) throw new Error('Failed to fetch contacts')
       const data = await response.json()
       setContacts(data.data || [])
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: 'Error',
         description: 'Failed to load contacts',
@@ -97,7 +97,7 @@ export default function NewCallPage() {
 
       router.push(`/contacts/${data.data.contact.id}`)
       router.refresh()
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: 'Error',
         description: err instanceof Error ? err.message : 'Failed to log call',

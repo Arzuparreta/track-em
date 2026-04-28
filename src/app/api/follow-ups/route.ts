@@ -9,12 +9,6 @@ const createFollowUpSchema = z.object({
   notes: z.string().optional(),
 })
 
-const updateFollowUpSchema = z.object({
-  scheduledAt: z.string().datetime().optional(),
-  notes: z.string().optional(),
-  completed: z.boolean().optional(),
-})
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)

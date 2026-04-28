@@ -33,7 +33,7 @@ export function SignInForm() {
         router.push(callbackUrl)
         router.refresh()
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An error occurred. Please try again.')
       setLoading(false)
     }

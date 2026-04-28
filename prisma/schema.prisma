@@ -135,6 +135,7 @@ model User {
   image         String?
   passwordHash  String?    // NEW: bcrypt hash for credentials auth
   role          String    @default("user")  // NEW: "admin" or "user"
+  createdAt     DateTime  @default(now())
   accounts      Account[]
   sessions      Session[]
 }

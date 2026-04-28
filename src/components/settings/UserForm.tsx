@@ -71,7 +71,7 @@ export function UserForm({ user, onClose, onSuccess }: UserFormProps) {
         const data = await res.json()
         setError(data.error || 'An error occurred')
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An error occurred')
     } finally {
       setLoading(false)

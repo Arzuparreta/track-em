@@ -21,7 +21,7 @@ export function UsersTable({ users, onEdit }: UsersTableProps) {
         const data = await res.json()
         alert(data.error || 'Failed to delete user')
       }
-    } catch (error) {
+    } catch (_error) {
       alert('Failed to delete user')
     }
   }

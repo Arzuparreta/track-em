@@ -5,15 +5,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, User, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
-
+import { Skeleton } from '@/components/ui/skeleton'
 import { Suspense } from 'react'
-import { Calendar } from 'lucide-react'
 import { format } from 'date-fns'
 
 export const dynamic = 'force-dynamic'
@@ -89,14 +88,13 @@ function NewFollowUpForm() {
 
   if (loading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-6 lg:p-8 space-y-6">
+        <Skeleton className="h-8 w-40" />
         <Card>
-          <CardContent className="p-6">
-            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-6"></div>
-            <div className="space-y-4">
-              <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
-            </div>
+          <CardContent className="p-6 space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-20 w-full" />
           </CardContent>
         </Card>
       </div>
@@ -104,22 +102,20 @@ function NewFollowUpForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <Button variant="ghost" asChild>
-        <Link href="/follow-ups">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Link>
-      </Button>
+    <div className="p-6 lg:p-8 space-y-6">
+      <div>
+        <Button variant="ghost" asChild size="sm" className="mb-2">
+          <Link href="/follow-ups">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Link>
+        </Button>
+        <h1 className="text-2xl font-bold tracking-tight">Schedule Follow-up</h1>
+        <p className="text-sm text-muted-foreground mt-1">Set a reminder to follow up with a contact</p>
+      </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-6 w-6" />
-            Schedule Follow-up
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <Label htmlFor="contactId">Contact *</Label>
@@ -166,14 +162,14 @@ function NewFollowUpForm() {
             </div>
 
             {selectedContact && (
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600">Follow-up with:</p>
-                <p className="font-medium">{selectedContact.name}</p>
+              <div className="rounded-lg border bg-muted/50 p-4">
+                <p className="text-xs text-muted-foreground">Follow-up with:</p>
+                <p className="text-sm font-medium">{selectedContact.name}</p>
               </div>
             )}
 
-            <div className="flex gap-4 pt-4">
-              <Button type="submit" className="flex-1">
+            <div className="flex gap-3 pt-2">
+              <Button type="submit" className="flex-1 sm:flex-none">
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Schedule
               </Button>
@@ -190,7 +186,7 @@ function NewFollowUpForm() {
 
 export default function NewFollowUpPage() {
   return (
-    <Suspense fallback={<div className="p-6">Loading...</div>}>
+    <Suspense fallback={<div className="p-6 lg:p-8">Loading...</div>}>
       <NewFollowUpForm />
     </Suspense>
   )

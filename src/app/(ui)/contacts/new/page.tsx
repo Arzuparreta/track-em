@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ContactForm from '@/components/contacts/ContactForm'
 import { createContact } from '@/lib/api/contacts'
+import { useState } from 'react'
 
 export default function NewContactPage() {
   const router = useRouter()
@@ -29,8 +29,6 @@ export default function NewContactPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <ContactForm onSubmit={handleSubmit} isLoading={isLoading} />
-    </div>
+    <ContactForm onSubmit={handleSubmit} isLoading={isLoading} />
   )
 }

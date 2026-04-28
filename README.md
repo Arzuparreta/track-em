@@ -102,10 +102,10 @@ crm-db              "docker-entryp..."   db         running (healthy)
 
 ```bash
 # Generate Prisma Client
-npx prisma generate
+npm run db:generate
 
 # Run migrations
-npx prisma migrate dev
+npm run db:migrate
 ```
 
 #### 6. Start Development Server
@@ -253,10 +253,10 @@ npm run test:e2e
 npm run lint
 
 # Database operations
-npx prisma generate    # Generate Prisma client
-npx prisma migrate dev # Run migrations
-npx prisma db push     # Push schema to database
-npx prisma studio      # Database GUI
+npm run db:generate    # Generate Prisma client
+npm run db:migrate     # Run migrations
+npm run db:push        # Push schema to database (dev only)
+npm run db:studio      # Database GUI
 ```
 
 ### Adding New Features

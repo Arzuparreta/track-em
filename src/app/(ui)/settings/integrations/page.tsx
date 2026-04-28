@@ -1,13 +1,14 @@
-"use client"
+'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Cloud, CheckCircle, XCircle, Loader2, Merge, Replace } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useToast } from '@/hooks/use-toast'
 
 interface IntegrationStatus {
   icloud: {
@@ -17,6 +18,7 @@ interface IntegrationStatus {
 }
 
 export default function IntegrationsPage() {
+  const { toast } = useToast()
   const [icloudUsername, setIcloudUsername] = useState('')
   const [icloudPassword, setIcloudPassword] = useState('')
   const [isConnecting, setIsConnecting] = useState(false)
@@ -27,7 +29,6 @@ export default function IntegrationsPage() {
   })
   const [loading, setLoading] = useState(true)
 
-  // Sync mode selection
   const [showSyncOptions, setShowSyncOptions] = useState(false)
   const [syncMode, setSyncMode] = useState<'merge' | 'replace'>('merge')
   const [localContactsCount, setLocalContactsCount] = useState(0)
@@ -49,8 +50,8 @@ export default function IntegrationsPage() {
           },
         })
       }
-    } catch (err) {
-      console.error('Failed to fetch status:', err)
+    } catch {
+      // silently fail
     } finally {
       setLoading(false)
     }
@@ -77,14 +78,13 @@ export default function IntegrationsPage() {
         throw new Error(data.error || 'Failed to connect to iCloud')
       }
 
-      // Check if there are local contacts to sync
       if (data.localContactsCount > 0) {
         setLocalContactsCount(data.localContactsCount)
         setShowSyncOptions(true)
       } else {
         window.location.reload()
       }
-    } catch (_err) {
+    } catch {
       setError('Connection failed')
     } finally {
       setIsConnecting(false)
@@ -105,10 +105,10 @@ export default function IntegrationsPage() {
         throw new Error(data.error || 'Sync failed')
       }
 
-      alert(`Sync completed successfully!`)
+      toast({ title: 'Success', description: 'Sync completed successfully!' })
       window.location.reload()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Sync failed')
+      toast({ title: 'Error', description: err instanceof Error ? err.message : 'Sync failed', variant: 'destructive' })
     } finally {
       setIsSyncing(false)
     }
@@ -123,29 +123,33 @@ export default function IntegrationsPage() {
         method: 'POST',
       })
       window.location.reload()
-    } catch (_err) {
-      alert('Failed to disconnect')
+    } catch {
+      toast({ title: 'Error', description: 'Failed to disconnect', variant: 'destructive' })
     } finally {
       setIsDisconnecting(false)
     }
   }
 
   if (loading) {
-    return <div className="animate-pulse">Loading...</div>
+    return <div className="animate-pulse text-sm text-muted-foreground">Loading...</div>
   }
 
   return (
     <div className="space-y-6">
-      {/* iCloud CardDAV */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Cloud className="h-5 w-5" />
-              iCloud Contacts (CardDAV)
-            </CardTitle>
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Cloud className="h-5 w-5" />
+                iCloud Contacts (CardDAV)
+              </CardTitle>
+              <CardDescription>
+                Sync your iCloud contacts with the CRM
+              </CardDescription>
+            </div>
             {status.icloud.connected ? (
-              <Badge className="bg-green-100 text-green-800">
+              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
                 <CheckCircle className="h-3 w-3 mr-1" />
                 Connected
               </Badge>
@@ -160,8 +164,8 @@ export default function IntegrationsPage() {
         <CardContent>
           {status.icloud.connected ? (
             <div className="space-y-4">
-              <p className="text-sm text-gray-600">
-                Connected as: <strong>{status.icloud.username}</strong>
+              <p className="text-sm text-muted-foreground">
+                Connected as: <strong className="text-foreground">{status.icloud.username}</strong>
               </p>
               <Button
                 variant="destructive"
@@ -180,7 +184,7 @@ export default function IntegrationsPage() {
             </div>
           ) : showSyncOptions ? (
             <div className="space-y-4">
-              <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              <div className="p-4 rounded-lg border border-amber-200 bg-amber-50">
                 <p className="text-sm text-amber-800">
                   You have <strong>{localContactsCount}</strong> local contacts.
                   Choose how to handle them:
@@ -198,7 +202,7 @@ export default function IntegrationsPage() {
                       <Merge className="h-4 w-4" />
                       Merge contacts
                     </Label>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Keep your local contacts and create them on iCloud.
                     </p>
                   </div>
@@ -211,7 +215,7 @@ export default function IntegrationsPage() {
                       <Replace className="h-4 w-4" />
                       Replace local contacts
                     </Label>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Remove all local contacts and replace with iCloud contacts.
                     </p>
                   </div>
@@ -266,12 +270,12 @@ export default function IntegrationsPage() {
                   placeholder="xxxx-xxxx-xxxx-xxxx"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Generate an app-specific password in your Apple ID settings
                 </p>
               </div>
               {error && (
-                <p className="text-sm text-red-600">{error}</p>
+                <p className="text-sm text-destructive">{error}</p>
               )}
               <Button type="submit" disabled={isConnecting}>
                 {isConnecting ? (
@@ -288,21 +292,20 @@ export default function IntegrationsPage() {
         </CardContent>
       </Card>
 
-      {/* Info Card */}
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-start gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Cloud className="h-5 w-5 text-blue-600" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Cloud className="h-5 w-5 text-primary" />
             </div>
             <div>
               <h3 className="font-medium">About iCloud Sync</h3>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 When connected, you can choose to sync contacts between this
                 app and your iCloud address book. You can also configure
                 whether new contacts are automatically created on iCloud in
                 the{' '}
-                <a href="/settings/contacts" className="text-blue-600 hover:underline">
+                <a href="/settings/contacts" className="text-primary hover:underline">
                   Contacts Settings
                 </a>{' '}
                 tab.

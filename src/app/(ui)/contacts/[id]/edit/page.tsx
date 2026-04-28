@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import ContactForm from '@/components/contacts/ContactForm'
 import { getContact, updateContact } from '@/lib/api/contacts'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface ContactFormData {
   name: string
@@ -56,23 +57,19 @@ export default function EditContactPage({ params }: { params: { id: string } }) 
 
   if (loadingContact) {
     return (
-      <div className="p-6 max-w-2xl mx-auto">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 w-48 bg-gray-200 rounded"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
-        </div>
+      <div className="p-6 lg:p-8 space-y-6">
+        <Skeleton className="h-8 w-40" />
+        <Skeleton className="h-64 w-full" />
       </div>
     )
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <ContactForm
-        initialData={initialData}
-        contactId={params.id}
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-      />
-    </div>
+    <ContactForm
+      initialData={initialData}
+      contactId={params.id}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+    />
   )
 }

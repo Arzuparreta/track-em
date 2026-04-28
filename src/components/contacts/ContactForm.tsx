@@ -14,8 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-// Badge removed - not used
+import { Card, CardContent } from '@/components/ui/card'
 
 interface ContactFormData {
   name: string
@@ -124,23 +123,23 @@ export default function ContactForm({
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" onClick={() => router.back()}>
+    <div className="p-6 lg:p-8 space-y-6">
+      <div>
+        <Button variant="ghost" onClick={() => router.back()} size="sm" className="mb-2">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold tracking-tight">
           {contactId ? 'Edit Contact' : 'Add Contact'}
         </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {contactId ? 'Update contact information' : 'Create a new contact'}
+        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <Card>
-          <CardHeader>
-            <CardTitle>Contact Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="pt-6 space-y-6">
             <div>
               <Label htmlFor="name">Name *</Label>
               <Input
@@ -224,7 +223,7 @@ export default function ContactForm({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="role">Role</Label>
                 <Select
@@ -277,7 +276,7 @@ export default function ContactForm({
           </CardContent>
         </Card>
 
-        <div className="flex justify-end gap-4 mt-6">
+        <div className="flex justify-end gap-3 mt-6">
           <Button
             type="button"
             variant="outline"

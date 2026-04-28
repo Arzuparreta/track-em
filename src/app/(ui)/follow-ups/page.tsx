@@ -76,25 +76,25 @@ export default function FollowUpsPage() {
   }
 
   const groupFollowUps = () => {
+    const overdue = followUps.filter(fu => isPast(parseISO(fu.scheduledAt)) && !fu.completed && !isToday(parseISO(fu.scheduledAt)))
     const today = followUps.filter(fu => isToday(parseISO(fu.scheduledAt)) && !fu.completed)
     const tomorrow = followUps.filter(fu => isTomorrow(parseISO(fu.scheduledAt)) && !fu.completed)
-    const overdue = followUps.filter(fu => isPast(parseISO(fu.scheduledAt)) && !fu.completed)
     const upcoming = followUps.filter(fu => !isPast(parseISO(fu.scheduledAt)) && !isToday(parseISO(fu.scheduledAt)) && !isTomorrow(parseISO(fu.scheduledAt)) && !fu.completed)
     const completed = followUps.filter(fu => fu.completed)
 
-    return { today, tomorrow, overdue, upcoming, completed }
+    return { overdue, today, tomorrow, upcoming, completed }
   }
 
   const groups = groupFollowUps()
 
   if (error) {
     return (
-      <div className="p-6">
-        <div className="bg-red-50 border border-red-200 text-red-600 rounded-lg p-4">
-          {error}
+      <div className="p-6 lg:p-8">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+          <p className="text-sm text-red-600">{error}</p>
           <button
             onClick={fetchFollowUps}
-            className="ml-4 text-blue-600 hover:text-blue-700 underline"
+            className="mt-2 text-sm text-red-600 hover:text-red-700 underline"
           >
             Retry
           </button>
@@ -109,47 +109,47 @@ export default function FollowUpsPage() {
     const variantStyles = {
       overdue: 'border-red-200 bg-red-50/50',
       today: 'border-amber-200 bg-amber-50/50',
-      default: 'border-gray-200',
+      default: 'border',
     }
 
     const badgeStyles = {
-      overdue: 'bg-red-100 text-red-800',
-      today: 'bg-amber-100 text-amber-800',
-      default: 'bg-blue-100 text-blue-800',
+      overdue: 'bg-red-100 text-red-800 hover:bg-red-100',
+      today: 'bg-amber-100 text-amber-800 hover:bg-amber-100',
+      default: 'bg-primary/10 text-primary hover:bg-primary/10',
     }
 
     return (
-      <div className={cn('p-4 border rounded-lg', variantStyles[variant])}>
+      <div className={cn('rounded-lg border p-4', variantStyles[variant])}>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-lg">{title}</h3>
+          <h3 className="font-semibold text-sm">{title}</h3>
           <Badge className={badgeStyles[variant]}>{followUps.length}</Badge>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {followUps.map((fu) => (
-            <div key={fu.id} className="bg-white p-3 rounded-lg border shadow-sm">
+            <div key={fu.id} className="bg-card p-3 rounded-lg border shadow-sm">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium truncate">{fu.contact.name}</p>
+                    <p className="text-sm font-medium truncate">{fu.contact.name}</p>
                     {fu.call && (
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs shrink-0">
                         Call
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {format(parseISO(fu.scheduledAt), 'EEEE, MMM d, h:mm a')}
                   </p>
                   {fu.notes && (
-                    <p className="text-sm text-gray-500 mt-1">{fu.notes}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{fu.notes}</p>
                   )}
                 </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
+                <div className="flex items-center gap-1 shrink-0">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleToggleComplete(fu.id, fu.completed)}
-                    className={fu.completed ? 'text-green-600' : ''}
+                    className="h-8 w-8 p-0"
                   >
                     <CheckCircle className="h-4 w-4" />
                   </Button>
@@ -157,7 +157,7 @@ export default function FollowUpsPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDelete(fu.id)}
-                    className="text-red-600 hover:text-red-700"
+                    className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -171,13 +171,11 @@ export default function FollowUpsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 lg:p-8 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Follow-ups</h1>
-          <p className="text-sm text-gray-500">
-            Track and manage your follow-up tasks
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight">Follow-ups</h1>
+          <p className="text-sm text-muted-foreground mt-1">Track and manage your follow-up tasks</p>
         </div>
         <Button asChild>
           <Link href="/follow-ups/new">
@@ -192,7 +190,7 @@ export default function FollowUpsPage() {
           {[...Array(5)].map((_, i) => (
             <Card key={i}>
               <CardContent className="p-4">
-                <Skeleton className="h-4 w-32 mb-2" />
+                <Skeleton className="h-4 w-24 mb-2" />
                 <Skeleton className="h-12 w-full" />
               </CardContent>
             </Card>
@@ -201,8 +199,8 @@ export default function FollowUpsPage() {
       ) : followUps.length === 0 ? (
         <Card>
           <CardContent className="p-6 text-center">
-            <p className="text-gray-500 mb-4">No follow-ups scheduled</p>
-            <Button asChild>
+            <p className="text-sm text-muted-foreground mb-4">No follow-ups scheduled</p>
+            <Button asChild size="sm">
               <Link href="/follow-ups/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Create your first follow-up
@@ -211,7 +209,7 @@ export default function FollowUpsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {groups.overdue.length > 0 && (
             <FollowUpSection title="Overdue" followUps={groups.overdue} variant="overdue" />
           )}
@@ -227,19 +225,19 @@ export default function FollowUpsPage() {
           {groups.completed.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg text-gray-500">Completed</CardTitle>
+                <CardTitle className="text-sm text-muted-foreground">Completed</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {groups.completed.map((fu) => (
-                    <div key={fu.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                    <div key={fu.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                       <div>
-                        <p className="font-medium text-gray-400 line-through">{fu.contact.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm font-medium text-muted-foreground line-through">{fu.contact.name}</p>
+                        <p className="text-xs text-muted-foreground">
                           {format(parseISO(fu.scheduledAt), 'MMM d, yyyy h:mm a')}
                         </p>
                       </div>
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-4 w-4 text-green-500" />
                     </div>
                   ))}
                 </div>

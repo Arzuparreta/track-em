@@ -3,23 +3,23 @@ import { render, screen } from '@testing-library/react'
 import HomePage from './(ui)/page'
 
 describe('HomePage', () => {
-  it('renders the page title', () => {
+  it('renders the page without crashing', async () => {
     render(<HomePage />)
-    expect(screen.getByText('Music Manager CRM')).toBeInTheDocument()
+    expect(await screen.findByText('Dashboard')).toBeInTheDocument()
   })
 
-  it('renders quick stats cards', () => {
+  it('renders stat cards', async () => {
     render(<HomePage />)
-    expect(screen.getByText('Total Contacts')).toBeInTheDocument()
+    expect(await screen.findByText('Total Contacts')).toBeInTheDocument()
     expect(screen.getByText("Today's Follow-ups")).toBeInTheDocument()
-    expect(screen.getByText('Recent Calls')).toBeInTheDocument()
-    expect(screen.getByText('Pending Emails')).toBeInTheDocument()
+    expect(screen.getByText('Overdue')).toBeInTheDocument()
+    expect(screen.getByText('Pending')).toBeInTheDocument()
   })
 
-  it('renders action buttons', () => {
+  it('renders quick actions section', async () => {
     render(<HomePage />)
-    expect(screen.getByText('Add New Contact')).toBeInTheDocument()
-    expect(screen.getByText('Log a Call')).toBeInTheDocument()
-    expect(screen.getByText('View All Contacts')).toBeInTheDocument()
+    expect(await screen.findByText('Quick Actions')).toBeInTheDocument()
+    expect(screen.getByText('New Contact')).toBeInTheDocument()
+    expect(screen.getByText('Log Call')).toBeInTheDocument()
   })
 })

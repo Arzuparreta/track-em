@@ -6,7 +6,7 @@ import UsersClient from '@/components/settings/UsersClient'
 
 export default async function SettingsUsersPage() {
   const session = await getServerSession(authOptions)
-  
+
   if (!session || (session.user as any).role !== 'admin') {
     redirect('/')
   }
@@ -25,12 +25,5 @@ export default async function SettingsUsersPage() {
     orderBy: { createdAt: 'desc' }
   })
 
-  return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">User Management</h1>
-      </div>
-      <UsersClient initialUsers={users} />
-    </div>
-  )
+  return <UsersClient initialUsers={users} />
 }

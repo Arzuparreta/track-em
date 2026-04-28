@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Separator } from '@/components/ui/separator'
 import { useToast } from '@/hooks/use-toast'
-
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface Contact {
   id: string
@@ -59,7 +59,6 @@ export default function NewCallPage() {
     }
   }
 
-  // Check for pre-filled contact ID from URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const contactId = params.get('contactId')
@@ -110,14 +109,13 @@ export default function NewCallPage() {
 
   if (loading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-6 lg:p-8 space-y-6">
+        <Skeleton className="h-8 w-32" />
         <Card>
-          <CardContent className="p-6">
-            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mb-6"></div>
-            <div className="space-y-4">
-              <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
-            </div>
+          <CardContent className="p-6 space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-20 w-full" />
           </CardContent>
         </Card>
       </div>
@@ -125,22 +123,20 @@ export default function NewCallPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <Button variant="ghost" asChild>
-        <a href="javascript:history.back()">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </a>
-      </Button>
+    <div className="p-6 lg:p-8 space-y-6">
+      <div>
+        <Button variant="ghost" asChild size="sm" className="mb-2">
+          <a href="javascript:history.back()">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </a>
+        </Button>
+        <h1 className="text-2xl font-bold tracking-tight">Log a Call</h1>
+        <p className="text-sm text-muted-foreground mt-1">Record details about your conversation</p>
+      </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-6 w-6" />
-            Log a Call
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <Label htmlFor="contactId">Contact *</Label>
@@ -164,7 +160,7 @@ export default function NewCallPage() {
               </Select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="direction">Direction *</Label>
                 <Select
@@ -198,7 +194,7 @@ export default function NewCallPage() {
                 id="durationSeconds"
                 type="number"
                 min="0"
-                placeholder="e.g., 1800"
+                placeholder="e.g., 180"
                 value={formData.durationSeconds}
                 onChange={(e) => setFormData(prev => ({ ...prev, durationSeconds: e.target.value }))}
               />
@@ -234,14 +230,14 @@ export default function NewCallPage() {
                   checked={formData.createFollowUp}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, createFollowUp: checked as boolean }))}
                 />
-                <Label htmlFor="createFollowUp" className="flex items-center gap-2">
+                <Label htmlFor="createFollowUp" className="flex items-center gap-2 text-sm">
                   <CheckCircle2 className="h-4 w-4" />
                   Schedule a follow-up
                 </Label>
               </div>
 
               {formData.createFollowUp && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l-2 border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pl-6 border-l-2 border-border">
                   <div>
                     <Label htmlFor="followUpDate">Follow-up Date & Time *</Label>
                     <Input
@@ -264,8 +260,8 @@ export default function NewCallPage() {
               )}
             </div>
 
-            <div className="flex gap-4 pt-4">
-              <Button type="submit" className="flex-1">
+            <div className="flex gap-3 pt-2">
+              <Button type="submit" className="flex-1 sm:flex-none">
                 Log Call
               </Button>
               <Button type="button" variant="outline" onClick={() => router.back()}>
@@ -279,10 +275,10 @@ export default function NewCallPage() {
       {selectedContact && (
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Calling:</p>
-            <p className="font-medium">{selectedContact.name}</p>
+            <p className="text-xs text-muted-foreground">Calling:</p>
+            <p className="text-sm font-medium">{selectedContact.name}</p>
             {selectedContact.phones[0] && (
-              <p className="text-sm text-gray-600">{selectedContact.phones[0]}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{selectedContact.phones[0]}</p>
             )}
           </CardContent>
         </Card>

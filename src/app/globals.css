@@ -2,28 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
+@layer base {
+  :root {
+    --background: 350 33% 97%;
+    --foreground: 26 20% 20%;
+
+    --muted: 350 20% 93%;
+    --muted-foreground: 26 10% 50%;
+
+    --popover: 350 33% 98%;
+    --popover-foreground: 26 20% 20%;
+
+    --card: 350 33% 98%;
+    --card-foreground: 26 20% 20%;
+
+    --border: 350 15% 90%;
+    --input: 350 15% 90%;
+
+    --primary: 26 35% 45%;
+    --primary-foreground: 350 33% 98%;
+
+    --secondary: 350 20% 93%;
+    --secondary-foreground: 26 20% 20%;
+
+    --accent: 350 25% 92%;
+    --accent-foreground: 26 20% 20%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 350 33% 98%;
+
+    --ring: 26 35% 45%;
+
+    --radius: 0.5rem;
+
+    --sidebar-bg: 350 33% 98%;
+    --sidebar-foreground: 26 20% 20%;
+    --sidebar-muted: 350 20% 93%;
+    --sidebar-muted-foreground: 26 10% 50%;
+    --sidebar-accent: 350 25% 92%;
+    --sidebar-accent-foreground: 26 35% 45%;
+    --sidebar-border: 350 15% 90%;
+  }
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-html,
-body,
-#root {
-  height: 100%;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer utilities {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,6 +13,26 @@ export default function ProfileSettingsPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Load current user data on mount
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const response = await fetch('/api/settings/profile')
+        if (response.ok) {
+          const data = await response.json()
+          setName(data.data.name || '')
+          setEmail(data.data.email || '')
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadProfile()
+  }, [])
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -33,6 +53,14 @@ export default function ProfileSettingsPage() {
     } finally {
       setIsSaving(false)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    )
   }
 
   return (

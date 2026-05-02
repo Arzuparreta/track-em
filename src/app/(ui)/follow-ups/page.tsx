@@ -198,14 +198,8 @@ export default function FollowUpsPage() {
         </div>
       ) : followUps.length === 0 ? (
         <Card>
-          <CardContent className="p-6 text-center">
-            <p className="text-sm text-muted-foreground mb-4">No follow-ups scheduled</p>
-            <Button asChild size="sm">
-              <Link href="/follow-ups/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Create your first follow-up
-              </Link>
-            </Button>
+          <CardContent className="p-10 text-center">
+            <p className="text-sm text-muted-foreground">You have no follow-ups yet.</p>
           </CardContent>
         </Card>
       ) : (

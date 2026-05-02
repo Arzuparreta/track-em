@@ -31,7 +31,7 @@ export default function SettingsLayout({
   const pathname = usePathname()
 
   return (
-    <div className="p-6 lg:p-8 max-w-4xl">
+    <div className="p-6 lg:p-8">
       <div className="mb-8">
         <Link
           href="/"
